@@ -1,6 +1,7 @@
 package org.hca.facility.FacilityManager.util;
 
 import org.hca.facility.FacilityManager.model.Resident;
+import org.hca.facility.FacilityManager.model.Sensor;
 import org.springframework.jdbc.core.RowMapper;
 
 public class RowMapperUtil {
@@ -38,5 +39,13 @@ public class RowMapperUtil {
         resident.setPhysicianTelephone(rs.getString("physician_telephone"));
         resident.setIsPet(rs.getString("ispet"));
         return resident;
+    };
+
+    public static RowMapper<Sensor> sensorRowMapper = (rs, rowNum) -> {
+        Sensor sensor = new Sensor();
+        sensor.setSensorId(rs.getInt("sensor_id"));
+        sensor.setSensorName(rs.getString("sensor_name"));
+        sensor.setPidAttached(rs.getInt("pid_attached"));
+        return sensor;
     };
 }

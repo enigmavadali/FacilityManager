@@ -57,4 +57,8 @@ public class ResidentService {
         }
         return "Sent resident data";
     }
+
+    public String insertResidentData(Resident resident){
+        return this.tippersDAO.insertResident(resident);
+    }
 }

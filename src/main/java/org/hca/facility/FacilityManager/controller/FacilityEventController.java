@@ -2,6 +2,7 @@ package org.hca.facility.FacilityManager.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hca.facility.FacilityManager.model.Resident;
 import org.hca.facility.FacilityManager.service.KafkaPublisherService;
 import org.hca.facility.FacilityManager.service.ResidentService;
 import org.hca.facility.FacilityManager.util.CryptUtil;
@@ -60,5 +61,10 @@ public class FacilityEventController {
     @PostMapping("/sendResidents")
     public String sendResidents(@RequestBody String body){
         return this.residentService.sendResidentDataToKafka();
+    }
+
+    @PostMapping("/addResident")
+    public String addResident(@RequestBody Resident resident){
+        return this.residentService.insertResidentData(resident);
     }
 }
