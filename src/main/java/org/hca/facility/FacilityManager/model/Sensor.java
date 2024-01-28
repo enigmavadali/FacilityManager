@@ -6,6 +6,16 @@ public class Sensor {
     private String sensorName;
     private Integer pidAttached;
 
+    public Sensor(){
+
+    }
+
+    public Sensor(Integer sensorId, String sensorName, Integer pidAttached) {
+        this.sensorId = sensorId;
+        this.sensorName = sensorName;
+        this.pidAttached = pidAttached;
+    }
+
     public Integer getSensorId() {
         return sensorId;
     }
