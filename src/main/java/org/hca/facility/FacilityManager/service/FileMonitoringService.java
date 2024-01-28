@@ -3,6 +3,7 @@ package org.hca.facility.FacilityManager.service;
 import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class FileMonitoringService {
 
     @Value("${dir.monitor.path}")
     private String dirPath;
+
+    @Autowired
+    private FileSenderService fileSenderService;
 
     @PostConstruct
     public void init(){
@@ -45,6 +49,9 @@ public class FileMonitoringService {
         while((key = watchService.take()) != null){
             for(WatchEvent<?> event : key.pollEvents()){
                 LOGGER.info("event kind " + event.kind() + " detected. FIle affected " + event.context());
+                if(event.kind() == StandardWatchEventKinds.ENTRY_CREATE || event.kind() == StandardWatchEventKinds.ENTRY_MODIFY){
+                    this.fileSenderService.sendFileToCloud(event.context().toString());
+                }
             }
             key.reset();
         }
