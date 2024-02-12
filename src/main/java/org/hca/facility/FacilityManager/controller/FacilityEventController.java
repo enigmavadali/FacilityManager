@@ -2,15 +2,22 @@ package org.hca.facility.FacilityManager.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hca.facility.FacilityManager.model.Query;
 import org.hca.facility.FacilityManager.model.Resident;
 import org.hca.facility.FacilityManager.service.KafkaPublisherService;
+import org.hca.facility.FacilityManager.service.QueryRunnerService;
 import org.hca.facility.FacilityManager.service.ResidentService;
 import org.hca.facility.FacilityManager.util.CryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FacilityEventController {
@@ -25,6 +32,9 @@ public class FacilityEventController {
 
     @Autowired
     private ResidentService residentService;
+
+    @Autowired
+    private QueryRunnerService queryRunnerService;
 
     @GetMapping("/ping")
     public String ping(){
@@ -66,5 +76,17 @@ public class FacilityEventController {
     @PostMapping("/addResident")
     public String addResident(@RequestBody Resident resident){
         return this.residentService.insertResidentData(resident);
+    }
+
+    @PostMapping("/runQuery")
+    public ResponseEntity<List<Map<String,Object>>> runQuery(@RequestBody Query query){
+        List<Map<String, Object>> response = new ArrayList<>();
+        try{
+            response = this.queryRunnerService.transformAndRunQuery(query);
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            LOGGER.error("Error running input query ", e);
+            return ResponseEntity.status(500).body(response);
+        }
     }
 }
