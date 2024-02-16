@@ -33,7 +33,7 @@ public class CryptUtil {
     private IvParameterSpec ivParameterSpec;
     private Cipher cipher;
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         initCipher(this.keyFilePath, this.ivFilePath);
     }

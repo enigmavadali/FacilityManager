@@ -27,7 +27,7 @@ public class FileMonitoringService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
             try{
-                LOGGER.info("Starting file watch");
+                LOGGER.info("Starting file watch for folder " + this.dirPath);
                 monitorFileChanges(dirPath);
             }catch(Exception e){
                 LOGGER.error("Error occurred while file monitoring",e);

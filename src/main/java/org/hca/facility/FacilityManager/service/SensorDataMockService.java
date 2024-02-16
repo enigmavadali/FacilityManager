@@ -27,7 +27,7 @@ public class SensorDataMockService {
     @Value("${sensor.topic}")
     private String sensorTopic;
 
-    static boolean runScheduler = true;
+    static boolean runScheduler = false;
 
     @Scheduled(fixedRate = 10*1000)
     public void sendSensorMessages(){
